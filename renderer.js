@@ -14,10 +14,10 @@ $("#closeWin").click(() => {
 let config = getConfig();
 let idx = 0;
 let date = 0;
-let timerSet = '';
-let timerDownDay = '';
+let timer = '';
 let startDate = new Date().getDate();
 let isOnline = 1;
+let start = 1;
 initConfig();
 
 function getConfigPath() {
@@ -64,9 +64,6 @@ function initConfig() {
     }
     if (config.autoSet == 1) {
         $(".autoSet")[0].checked = true;
-        clearAutoSet();
-        setAutoSet();
-        saveImage(1);
     }
     if (config.autoDown == 1) {
         $(".autoDown")[0].checked = true;
@@ -76,8 +73,6 @@ function initConfig() {
     }
     if (config.autoDownDay == 1) {
         $(".autoDownDay")[0].checked = true;
-        clearAutoDownDay();
-        setAutoDownDay();
     }
     $("#savePath").html(config.savePath)
 }
@@ -136,7 +131,10 @@ function getBingImg(type) {
             $("#img").stop().fadeIn(300);
             showImg = 1;
             if (config.autoDown == 1) {
-                saveImage()
+                saveImage();
+            }
+            if (config.autoSet == 1 && start == 1) {
+                saveImage(1)
             }
         }
     })
@@ -188,7 +186,7 @@ function saveImage(setBg, imgUrl) {
             reader.readAsDataURL(blob);
             reader.onload = function(e) {
                 var dataBuffer = new Buffer(e.target.result.replace(/^data:image\/\w+;base64,/,""), 'base64');
-                let savePath = config.savePath + 'BingWallpaper_' + date + '.jpg';
+                let savePath = config.savePath + '\\' + 'BingWallpaper_' + date + '.jpg';
                 fs.writeFile(savePath, dataBuffer, function (err) {
                     if(err){
                         remote.dialog.showErrorBox('保存文件出错了！', err)
@@ -199,6 +197,7 @@ function saveImage(setBg, imgUrl) {
                             wallpaper.set(savePath);
                         }
                     }
+                    start = 0;
                 })
             }
         }    
@@ -224,6 +223,10 @@ $(".choseFilePath").click(() => {
     }
 })
 
+$("#savePath").click(function(){
+    remote.shell.openExternal($(this).text());
+})
+
 $("#infoBtn").click(() => {
     remote.shell.openExternal('https://www.ihawo.com/archives/106.html')
 })
@@ -242,9 +245,9 @@ $("#setting input[type=checkBox]").change(function() {
             break;
         case 'autoSet':
             if (checked) {
-                setAutoSet()
-            } else {
-                clearAutoSet()
+                getBingImgUrl(0, function(url) {
+                    saveImage(1, url);
+                });
             }
             config.autoSet = checked ? 1 : 0;
             break;
@@ -255,46 +258,28 @@ $("#setting input[type=checkBox]").change(function() {
             config.min = checked ? 1 : 0;
             break;
         case 'autoDownDay':
-            if (checked) {
-                setAutoDownDay()
-            } else {
-                clearAutoDownDay()
-            }
             config.autoDownDay = checked ? 1 : 0;
             break;
     }
     saveConfig(config)
 })
 
-function setAutoSet() {
-    timerSet = setInterval(function() {
-        let nowDate = new Date().getDate();
-            if (nowDate != startDate) {
+timer = setInterval(function() {
+    let nowDate = new Date().getDate();
+    if (nowDate != startDate) {
+        startDate = nowDate;
+        if (config.autoSet == 1) {
             getBingImgUrl(0, function(url) {
                 saveImage(1, url);
             });
         }
-    }, 3600000)
-}
-
-function clearAutoSet() {
-    clearInterval(timerSet);
-}
-
-function setAutoDownDay() {
-    timerDownDay = setInterval(function() {
-        let nowDate = new Date().getDate();
-        if (nowDate != startDate) {
+        if (config.autoSet == 1) {
             getBingImgUrl(0, function(url) {
                 saveImage(0, url);
             });
         }
-    }, 3600000)
-}
-
-function clearAutoDownDay() {
-    clearInterval(timerDownDay);
-}
+    }
+}, 3600000)
 
 function checkUpdate() {
     if (isOnline == 0) {
@@ -335,3 +320,13 @@ function checkNetWork() {
     }
     return true;
 }
+
+let reloadDate = startDate;
+ipc.on('reload', () => {
+    let nowDate = new Date().getDate();
+    if (nowDate != reloadDate) {
+        reloadDate = nowDate;
+        idx = 0;
+        getBingImg();
+    }
+})
