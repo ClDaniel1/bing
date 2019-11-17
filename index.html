@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Bing Wallpaper</title>
+    <style>
+      * {
+        padding: 0;
+        margin: 0;
+        color: #eee;
+        -webkit-touch-callout: none; /* iOS Safari */
+
+        -webkit-user-select: none; /* Chrome/Safari/Opera */
+
+        -khtml-user-select: none; /* Konqueror */
+
+        -moz-user-select: none; /* Firefox */
+
+        -ms-user-select: none; /* Internet Explorer/Edge */
+
+        user-select: none; /* Non-prefixed version, currently
+
+        not supported by any browser */
+      }
+      html {
+        width: 1066px;
+        height: 600px;
+        overflow: hidden;
+      }
+      .header {
+        width: 100%;
+        height: 35px;
+        -webkit-app-region: drag;
+        position: absolute;
+        top: 0;
+        cursor: move;
+        z-index: 1;
+        text-shadow: 0 0 10px #333;
+      }
+      .title {
+        display: inline-block;
+        text-align: center;
+        line-height: 35px;
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: -1;
+      }
+      .header-btn{
+        -webkit-app-region: no-drag;
+        height: 35px;
+        padding: 0 15px;
+        display: inline-block;
+        text-align: center;
+        line-height: 35px;
+        cursor: pointer;
+        float: right;
+        top: 0;
+        z-index: 999;
+      }
+      .header-btn i{
+        transition: all 1s;
+      }
+      .header-btn:hover i{
+        transform: rotate(360deg);
+        color: orange;
+        text-shadow: 0 0 10px;
+      }
+      #closeWin:hover i{
+        color: red;
+      }
+      #body{
+        width: 1066px;
+        height: 600px;
+        background: #333;
+        z-index: 0;
+        position: relative;
+        transition: all 0.5s;
+        overflow: hidden;
+      }
+      #body > div{
+        width: 1066px;
+        height: 600px;
+        text-align: center;
+        font-size: 20px;
+        position: absolute;
+        top: 0;
+        left: 0;
+        background: #333;
+      }
+      .tips, .loading{
+        line-height: 600px;
+      }
+      #img{
+        z-index: -1;
+        overflow: hidden;
+      }
+      #img img{
+        width: 1066px;
+        height: 600px;
+      }
+      .imgBtn {
+        position: absolute;
+        top: 0;
+        padding: 0 20px;
+        height: 600px;
+        line-height: 600px;
+        z-index: 10;
+      }
+      .imgBtn i {
+        cursor: pointer;
+        transition: all 0.5s;
+        font-size: 25px;
+        text-shadow: 0 0 10px;
+      }
+      .imgBtn i:hover {
+        text-shadow: 0 0 10px orange;
+        color: orange;
+      }
+      .leftBtn {
+        left: 0;
+      }
+      .rightBtn{
+        right: 0;
+      }
+      #imgMain {
+        line-height: 0;
+        position: absolute;
+        left: 0;
+        top: 0;
+        overflow: hidden;
+      }
+      .toolBar {
+        position: absolute;
+        padding: 15px;
+        bottom: 0;
+        right: 0;
+        z-index: 15;
+      }
+      .toolBar > div {
+        display: inline-block;
+        line-height: 30px;
+      }
+      .toolBar i {
+        cursor: pointer;
+        padding: 0 10px;
+        text-shadow: 0 0 10px #333;
+        transition: all 0.5s;
+      }
+      .toolBar i:hover {
+        text-shadow: 0 0 10px orange;
+        color: orange;
+      }
+      #setting {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 1066px;
+        height: 600px;
+        background: rgba(0,0,0,0.5);
+        display: none;
+      }
+      .setting-main {
+        padding: 50px 15px 15px 15px;
+      }
+      .setting-item {
+        width: 900px;
+        margin: 15px auto;
+        font-size: 18px;
+        font-weight: 300;
+      }
+      .setting-name {
+        display: inline-block;
+        width: 250px;
+        margin-right: 25px;
+        text-align: right;
+        line-height: 35px;
+      }
+      .setting-item input:not(.check){
+        height: 35px;
+        line-height: 35px;
+        box-shadow: none;
+        color: #333;
+      }
+      .check {
+        height: 20px;
+        width: 20px;
+      }
+      #copyright{
+        position: absolute;
+        padding: 15px;
+        bottom: 0;
+        left: 0;
+        font-size: 12px;
+        z-index: 15;
+        line-height: 25px;
+        text-shadow: 0 0 10px #000;
+      }
+      .choseFilePath{
+        background: white;
+        border: none;
+        box-shadow: none;
+        color: #333;
+        margin-left: 15px;
+        line-height: 25px;
+        padding: 0 15px;
+        cursor: pointer;
+      }
+    </style>
+   <link rel="stylesheet" href="static/css/font-awesome.css">
+   <script>window.$ = window.jQuery = require('./jquery.min.js');</script>
+  </head>
+  <body>
+    <div class="header">
+      <span class="header-btn" id="closeWin">
+        <i class="fa fa-times" aria-hidden="true"></i>
+      </span>
+      <span class="header-btn" id="settingBtn">
+        <i class="fa fa-cog" aria-hidden="true"></i>
+      </span>
+      <span class="header-btn" id="infoBtn">
+        <i class="fa fa-info" aria-hidden="true"></i>
+      </span>
+      <span class="title">Bing Wallpaper</span>
+    </div>
+    <div id="body">
+      <div class="tips">无网络！</div>
+      <div class="loading"><i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></div>
+      <div id="img">
+        <div id="imgMain"></div>
+        <div class="leftBtn imgBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
+        <div class="rightBtn imgBtn"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+        <div class="toolBar">
+           
+            <div><i class="fa fa-desktop set" aria-hidden="true" title="设为壁纸，会自动保存"></i></div>
+            <div><i class="fa fa-download down" aria-hidden="true" title="下载"></i></div>
+        </div>
+        <div id="copyright"></div>
+      </div>
+    </div>
+    <div id="setting">
+      <div class="setting-main">
+        <div class="setting-item">
+          <span class="setting-name">开机自启</span>
+          <input type="checkbox" class="check autoOpen" name="autoOpen">
+        </div>
+        <div class="setting-item">
+          <span class="setting-name">每日自动设置壁纸</span>  
+          <input type="checkbox" class="check autoSet" name="autoSet">
+        </div>
+        <div class="setting-item">
+            <span class="setting-name">每日自动下载壁纸</span>  
+            <input type="checkbox" class="check autoDownDay" name="autoDownDay">
+          </div>
+        <div class="setting-item">
+          <span class="setting-name">浏览时自动下载</span>
+          <input type="checkbox" class="check autoDown" name="autoDown">
+        </div>
+        <div class="setting-item">
+          <span class="setting-name">点击关闭时最小化窗口到托盘</span>
+          <input type="checkbox" class="check min" name="min">
+        </div>
+        <div class="setting-item">
+          <span class="setting-name">壁纸保存路径</span>
+          <span id="savePath">123</span>
+          <button type="button" class="choseFilePath">选择文件夹</button>
+        </div>
+      </div>
+    </div>
+    <script>
+      // You can also require other files to run in this process
+      require('./renderer.js')
+    </script>
+  </body>
+</html>
