@@ -3,7 +3,7 @@
 // All of the Node.js APIs are available in this process.
 const {ipcRenderer: ipc, remote } = require('electron');
 
-$("#closeWin").click(() => {
+$("#closeBtn").click(() => {
     if (config.min == 1) {
         ipc.send('min');
     } else {
@@ -21,12 +21,12 @@ let start = 1;
 initConfig();
 
 function getConfigPath() {
-    return remote.app.getAppPath() + '/config.json'
+    return remote.app.getPath('documents') + '/bingWallpaper/'
 }
 
 function getConfig() {
     let fs=require("fs");
-    let configPath = getConfigPath();
+    let configPath = getConfigPath() + 'config.json';
     let exists = fs.existsSync(configPath)
     if (!exists) {
         let config = {
@@ -48,7 +48,10 @@ function saveConfig(config) {
     let fs = require("fs");
     let configPath = getConfigPath();
     let jsonObj = JSON.stringify(config);
-    fs.writeFile(configPath, jsonObj, function (err) {
+    if (!fs.existsSync(configPath)) {  
+        fs.mkdirSync(configPath);  
+    }
+    fs.writeFile(configPath + 'config.json', jsonObj, function (err) {
         if(err){
             remote.dialog.showErrorBox('修改配置失败！', err)
             console.log(err);
@@ -174,7 +177,7 @@ function saveImage(setBg, imgUrl) {
     let fs = require("fs");
     if (!fs.existsSync(config.savePath)) {  
         fs.mkdirSync(config.savePath);  
-    }  
+    }
 
     var xhr = new XMLHttpRequest();    
     xhr.open("get", imgUrl, true);
@@ -203,14 +206,17 @@ function saveImage(setBg, imgUrl) {
         }    
     }, xhr.send();
 }
-
+$("#settingBtn").hover(() => {
+    $("#bodyBlur").html($("#body > div:visible").clone());
+})
 $("#settingBtn").click(() => {
-    if ($("#setting").hasClass('active')) {
-        $("#body").css({filter:"blur(0)", transform: "scale(1)"});
+    if ($("#settingBtn").hasClass('active')) {
+        $("#closeBtn,#infoBtn").animate({opacity :"1"}, 300);
     } else {
-        $("#body").css({filter:"blur(20px)", transform: "scale(1.1)"});
+        $("#closeBtn,#infoBtn").animate({opacity :"0"}, 300);
     }
-    $("#setting").toggleClass('active').fadeToggle(300)
+    $("#settingBtn").toggleClass('active');
+    $("#setting,#bodyBlur").fadeToggle(300)
 })
 
 $(".choseFilePath").click(() => {
@@ -223,8 +229,8 @@ $(".choseFilePath").click(() => {
     }
 })
 
-$("#savePath").click(function(){
-    remote.shell.openExternal($(this).text());
+$("#savePath,.openFolder").click(function(){
+    remote.shell.openExternal(config.savePath);
 })
 
 $("#infoBtn").click(() => {
@@ -273,7 +279,7 @@ timer = setInterval(function() {
                 saveImage(1, url);
             });
         }
-        if (config.autoSet == 1) {
+        if (config.autoDown == 1) {
             getBingImgUrl(0, function(url) {
                 saveImage(0, url);
             });
@@ -328,5 +334,6 @@ ipc.on('reload', () => {
         reloadDate = nowDate;
         idx = 0;
         getBingImg();
+        checkUpdate();
     }
 })

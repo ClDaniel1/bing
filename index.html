@@ -60,14 +60,21 @@
         z-index: 999;
       }
       .header-btn i{
-        transition: all 1s;
+        transition: all 1s ease;
+      }
+      .active i{
+        transform: rotate(360deg);
+        color: orange;
       }
       .header-btn:hover i{
         transform: rotate(360deg);
         color: orange;
         text-shadow: 0 0 10px;
       }
-      #closeWin:hover i{
+      #infoBtn:hover i{
+        color: green;
+      }
+      #closeBtn:hover i{
         color: red;
       }
       #body{
@@ -76,7 +83,7 @@
         background: #333;
         z-index: 0;
         position: relative;
-        transition: all 0.5s;
+        transition: all 0.5s ease;
         overflow: hidden;
       }
       #body > div{
@@ -110,7 +117,7 @@
       }
       .imgBtn i {
         cursor: pointer;
-        transition: all 0.5s;
+        transition: all 0.5s ease;
         font-size: 25px;
         text-shadow: 0 0 10px;
       }
@@ -146,7 +153,7 @@
         cursor: pointer;
         padding: 0 10px;
         text-shadow: 0 0 10px #333;
-        transition: all 0.5s;
+        transition: all 0.5s ease;
       }
       .toolBar i:hover {
         text-shadow: 0 0 10px orange;
@@ -210,16 +217,23 @@
       #savePath{
         cursor: pointer;
       }
+      #bodyBlur {
+        position: absolute;
+        top: 0;
+        left: 0;
+        filter: blur(15px);
+        display: none;
+      }
     </style>
    <link rel="stylesheet" href="static/css/font-awesome.css">
    <script>window.$ = window.jQuery = require('./jquery.min.js');</script>
   </head>
   <body>
     <div class="header">
-      <span class="header-btn" id="closeWin">
+      <span class="header-btn" id="closeBtn" title="关闭/最小化">
         <i class="fa fa-times" aria-hidden="true"></i>
       </span>
-      <span class="header-btn" id="settingBtn">
+      <span class="header-btn" id="settingBtn" title="设置">
         <i class="fa fa-cog" aria-hidden="true"></i>
       </span>
       <span class="header-btn" id="infoBtn">
@@ -232,16 +246,17 @@
       <div class="loading"><i class="fa fa-circle-o-notch fa-spin" aria-hidden="true"></i></div>
       <div id="img">
         <div id="imgMain"></div>
-        <div class="leftBtn imgBtn"><i class="fa fa-chevron-left" aria-hidden="true"></i></div>
-        <div class="rightBtn imgBtn"><i class="fa fa-chevron-right" aria-hidden="true"></i></div>
+        <div class="leftBtn imgBtn"><i class="fa fa-chevron-left" aria-hidden="true" title="上一天壁纸"></i></div>
+        <div class="rightBtn imgBtn"><i class="fa fa-chevron-right" aria-hidden="true" title="下一天壁纸"></i></div>
         <div class="toolBar">
-           
+            <div><i class="fa fa-folder-o openFolder" aria-hidden="true" title="打开壁纸保存文件夹"></i></div>
             <div><i class="fa fa-desktop set" aria-hidden="true" title="设为壁纸，会自动保存"></i></div>
             <div><i class="fa fa-download down" aria-hidden="true" title="下载"></i></div>
         </div>
-        <div id="copyright"></div>
+        <div id="copyright" title="版权信息"></div>
       </div>
     </div>
+    <div id="bodyBlur"></div>
     <div id="setting">
       <div class="setting-main">
         <div class="setting-item">
@@ -266,7 +281,7 @@
         </div>
         <div class="setting-item">
           <span class="setting-name">壁纸保存路径</span>
-          <span id="savePath">123</span>
+          <span id="savePath" title="打开壁纸保存文件夹">123</span>
           <button type="button" class="choseFilePath">选择文件夹</button>
         </div>
       </div>
