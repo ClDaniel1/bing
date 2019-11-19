@@ -148,6 +148,7 @@ function getBingImgUrl(idx, callBack) {
         url:'http://cn.bing.com/HPImageArchive.aspx?format=js&idx=' + idx + '&n=1',
         async: false,
         success: function(ret) {
+            date = ret.images[0].enddate;
             callBack('http://www.bing.com' + ret.images[0].url);
         }
     })
