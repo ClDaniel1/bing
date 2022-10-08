@@ -4,13 +4,13 @@
   "description": "bing wallpaper",
   "keywords": [],
   "main": "./main.js",
-  "version": "1.1.6",
+  "version": "1.1.7",
   "author": "L",
   "repository": "https://github.com/ClDaniel1/bing",
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
-    "pack": "electron-packager . bingWallpaper --win --out ../myClient --arch=x64 --app-version=1.1.6 --electron-version=7.1.1 --icon=./icon.ico"
+    "pack": "electron-packager . bingWallpaper --win --out ../myClient --arch=x64 --app-version=1.1.7 --electron-version=7.1.1 --icon=./icon.ico"
   },
   "win": {
     "icon": "/icon.ico"

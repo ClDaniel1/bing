@@ -128,6 +128,7 @@ function getBingImg(type) {
         url:'http://cn.bing.com/HPImageArchive.aspx?format=js&idx=' + idx + '&n=1',
         success: function(ret) {
             date = ret.images[0].enddate;
+            ret.images[0].url = ret.images[0].url.replace(/1920x1080/g, 'UHD');
             $("#imgMain").html('<img draggable="false" src="http://www.bing.com' + ret.images[0].url + '" />');
             $("#copyright").html(ret.images[0].copyright)
             $("#body > div").fadeOut(300);
@@ -149,6 +150,7 @@ function getBingImgUrl(idx, callBack) {
         async: false,
         success: function(ret) {
             date = ret.images[0].enddate;
+            ret.images[0].url = ret.images[0].url.replace(/1920x1080/g, 'UHD');
             callBack('http://www.bing.com' + ret.images[0].url);
         }
     })
