@@ -26,11 +26,14 @@ function createWindow () {
       width: 1066,
       height: 600,
       webPreferences: {
-        nodeIntegration: true
+        nodeIntegration: true,
+        contextIsolation: false
       },
       frame: false,
       resizable: false
     })
+    require('@electron/remote/main').initialize()  //添加语句
+    require('@electron/remote/main').enable(mainWindow.webContents)   //添加语句
 
     // and load the index.html of the app.
     mainWindow.loadFile('index.html')

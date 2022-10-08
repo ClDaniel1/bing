@@ -4,21 +4,44 @@
   "description": "bing wallpaper",
   "keywords": [],
   "main": "./main.js",
-  "version": "1.1.7",
+  "version": "1.1.8",
   "author": "L",
   "repository": "https://github.com/ClDaniel1/bing",
   "license": "GPL-3.0",
   "scripts": {
     "start": "electron .",
-    "pack": "electron-packager . bingWallpaper --win --out ../myClient --arch=x64 --app-version=1.1.7 --electron-version=7.1.1 --icon=./icon.ico"
+    "build": "electron-builder",
+    "pack": "electron-packager . bingWallpaper --win --out ../myClient --arch=x64 --app-version=1.1.8 --electron-version=15.5.5 --icon=./icon.ico"
+  },
+  "build": {
+    "productName": "bingWallpaper",
+    "appId": "com.l.bingWallpaper",
+    "copyright": "L",
+    "directories": {
+      "output": "build"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+    "win": {
+      "icon": "./icon.ico",
+      "target": [
+        {
+          "target": "nsis"
+        }
+      ]
+    }
   },
   "win": {
     "icon": "/icon.ico"
   },
   "dependencies": {
+    "@electron/remote": "^2.0.8",
     "wallpaper": "^4.4.1"
   },
   "devDependencies": {
-    "electron": "7.1.1"
+    "electron": "15.5.5",
+    "electron-builder": "^23.6.0"
   }
 }
