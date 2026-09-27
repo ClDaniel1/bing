@@ -23,9 +23,13 @@
         not supported by any browser */
       }
       html {
-        width: 1066px;
-        height: 600px;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
+      }
+      body {
+        width: 100%;
+        height: 100%;
       }
       .header {
         width: 100%;
@@ -78,8 +82,8 @@
         color: red;
       }
       #body{
-        width: 1066px;
-        height: 600px;
+        width: 100%;
+        height: 100%;
         background: #333;
         z-index: 0;
         position: relative;
@@ -87,8 +91,8 @@
         overflow: hidden;
       }
       #body > div{
-        width: 1066px;
-        height: 600px;
+        width: 100%;
+        height: 100%;
         text-align: center;
         font-size: 20px;
         position: absolute;
@@ -97,22 +101,27 @@
         background: #333;
       }
       .tips, .loading{
-        line-height: 600px;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       #img{
         z-index: -1;
         overflow: hidden;
       }
       #img img{
-        width: 1066px;
-        height: 600px;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
       .imgBtn {
         position: absolute;
         top: 0;
         padding: 0 20px;
-        height: 600px;
-        line-height: 600px;
+        height: 100%;
+        display: flex;
+        align-items: center;
         z-index: 10;
       }
       .imgBtn i {
@@ -136,18 +145,20 @@
         position: absolute;
         left: 0;
         top: 0;
+        width: 100%;
+        height: 100%;
         overflow: hidden;
       }
       .toolBar {
         position: absolute;
-        padding: 15px;
+        padding: 0 10px 6px;
         bottom: 0;
         right: 0;
         z-index: 15;
       }
       .toolBar > div {
         display: inline-block;
-        line-height: 30px;
+        line-height: 26px;
       }
       .toolBar i {
         cursor: pointer;
@@ -163,64 +174,145 @@
         position: absolute;
         top: 0;
         left: 0;
-        width: 1066px;
-        height: 600px;
-        background: rgba(0,0,0,0.5);
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.45);
         display: none;
       }
-      .setting-main {
-        padding: 50px 15px 15px 15px;
+      .setting-card {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 520px;
+        padding: 8px 24px 20px 24px;
+        background: rgba(15,15,15,0.78);
+        backdrop-filter: blur(20px);
+        border-radius: 12px;
+        border: 1px solid rgba(255,255,255,0.12);
+        box-shadow: 0 20px 60px rgba(0,0,0,0.5);
       }
-      .setting-item {
-        width: 900px;
-        margin: 15px auto;
+      .setting-title {
         font-size: 18px;
+        font-weight: bold;
+        line-height: 50px;
+        border-bottom: 1px solid rgba(255,255,255,0.12);
+        margin-bottom: 6px;
+      }
+      .setting-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 48px;
+        padding: 0 12px;
+        border-radius: 8px;
+        font-size: 15px;
         font-weight: 300;
+        transition: background 0.2s ease;
       }
-      .setting-name {
+      .setting-row:hover {
+        background: rgba(255,255,255,0.06);
+      }
+      .setting-label {
+        flex-shrink: 0;
+      }
+      .switch {
+        position: relative;
         display: inline-block;
-        width: 250px;
-        margin-right: 25px;
-        text-align: right;
-        line-height: 35px;
+        width: 40px;
+        height: 22px;
+        flex-shrink: 0;
       }
-      .setting-item input:not(.check){
-        height: 35px;
-        line-height: 35px;
-        box-shadow: none;
-        color: #333;
+      .switch input {
+        opacity: 0;
+        width: 0;
+        height: 0;
       }
-      .check {
-        height: 20px;
-        width: 20px;
+      .slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(255,255,255,0.25);
+        border-radius: 22px;
+        transition: all 0.3s ease;
+      }
+      .slider:before {
+        content: "";
+        position: absolute;
+        height: 16px;
+        width: 16px;
+        left: 3px;
+        top: 3px;
+        background: white;
+        border-radius: 50%;
+        transition: all 0.3s ease;
+      }
+      .switch input:checked + .slider {
+        background: orange;
+      }
+      .switch input:checked + .slider:before {
+        transform: translateX(18px);
       }
       #copyright{
         position: absolute;
-        padding: 15px;
+        padding: 0 15px 6px;
         bottom: 0;
         left: 0;
         font-size: 12px;
         z-index: 15;
-        line-height: 25px;
+        line-height: 20px;
+        text-shadow: 0 0 10px #000;
+      }
+      #imgDate{
+        position: absolute;
+        left: 0;
+        bottom: 26px;
+        padding: 0 15px;
+        font-size: 12px;
+        z-index: 15;
+        line-height: 20px;
         text-shadow: 0 0 10px #000;
       }
       .choseFilePath{
-        background: white;
-        border: none;
-        box-shadow: none;
-        color: #333;
-        margin-left: 15px;
-        line-height: 25px;
-        padding: 0 15px;
+        background: rgba(255,255,255,0.1);
+        border: 1px solid rgba(255,255,255,0.25);
+        color: #eee;
+        border-radius: 6px;
+        line-height: 28px;
+        padding: 0 14px;
         cursor: pointer;
+        font-size: 13px;
+        flex-shrink: 0;
+        transition: all 0.2s ease;
+      }
+      .choseFilePath:hover{
+        background: rgba(255,255,255,0.2);
+        border-color: orange;
+        color: orange;
       }
       #savePath{
+        flex: 1;
+        margin: 0 12px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 13px;
+        color: rgba(238,238,238,0.7);
         cursor: pointer;
+      }
+      #savePath:hover{
+        color: orange;
       }
       #bodyBlur {
         position: absolute;
         top: 0;
         left: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
         filter: blur(15px);
         display: none;
       }
@@ -253,35 +345,52 @@
             <div><i class="fa fa-desktop set" aria-hidden="true" title="设为壁纸，会自动保存"></i></div>
             <div><i class="fa fa-download down" aria-hidden="true" title="下载"></i></div>
         </div>
+        <div id="imgDate" title="图片日期"></div>
         <div id="copyright" title="版权信息"></div>
       </div>
     </div>
     <div id="bodyBlur"></div>
     <div id="setting">
-      <div class="setting-main">
-        <div class="setting-item">
-          <span class="setting-name">开机自启</span>
-          <input type="checkbox" class="check autoOpen" name="autoOpen">
+      <div class="setting-card">
+        <div class="setting-title">设置</div>
+        <div class="setting-row">
+          <span class="setting-label">开机自启</span>
+          <label class="switch">
+            <input type="checkbox" class="check autoOpen" name="autoOpen">
+            <span class="slider"></span>
+          </label>
         </div>
-        <div class="setting-item">
-          <span class="setting-name">每日自动设置壁纸</span>  
-          <input type="checkbox" class="check autoSet" name="autoSet">
+        <div class="setting-row">
+          <span class="setting-label">每日自动设置壁纸</span>
+          <label class="switch">
+            <input type="checkbox" class="check autoSet" name="autoSet">
+            <span class="slider"></span>
+          </label>
         </div>
-        <div class="setting-item">
-            <span class="setting-name">每日自动下载壁纸</span>  
+        <div class="setting-row">
+          <span class="setting-label">每日自动下载壁纸</span>
+          <label class="switch">
             <input type="checkbox" class="check autoDownDay" name="autoDownDay">
-          </div>
-        <div class="setting-item">
-          <span class="setting-name">浏览时自动下载</span>
-          <input type="checkbox" class="check autoDown" name="autoDown">
+            <span class="slider"></span>
+          </label>
         </div>
-        <div class="setting-item">
-          <span class="setting-name">点击关闭时最小化窗口到托盘</span>
-          <input type="checkbox" class="check min" name="min">
+        <div class="setting-row">
+          <span class="setting-label">浏览时自动下载</span>
+          <label class="switch">
+            <input type="checkbox" class="check autoDown" name="autoDown">
+            <span class="slider"></span>
+          </label>
         </div>
-        <div class="setting-item">
-          <span class="setting-name">壁纸保存路径</span>
-          <span id="savePath" title="打开壁纸保存文件夹">123</span>
+        <div class="setting-row">
+          <span class="setting-label">点击关闭时最小化窗口到托盘</span>
+          <label class="switch">
+            <input type="checkbox" class="check min" name="min">
+            <span class="slider"></span>
+          </label>
+        </div>
+        <div class="setting-row">
+          <span class="setting-label">壁纸保存路径</span>
+          <span id="savePath" title="打开壁纸保存文件夹"></span>
           <button type="button" class="choseFilePath">选择文件夹</button>
         </div>
       </div>
